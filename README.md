@@ -1,7 +1,7 @@
 ﻿# Contentful Translation App
 
 ## Opperation
-Running the program is simple enough, but make sure to also include the key to Azure Azure Translator API: `dotnet run <YOUR-KEY>`.
+Running the program is simple enough, but make sure to also include the key to an Azure Translator API: `dotnet run <YOUR-KEY>`.
 
 ## Resources
 - Azure Cognitive Services Translator
