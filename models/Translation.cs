@@ -1,4 +1,4 @@
-public class Translation
+public class Translation : ContentfulBase
 {
   public string? Text { get; set; }
   public string? Lang { get; set; }

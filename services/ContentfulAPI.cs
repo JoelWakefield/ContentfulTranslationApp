@@ -3,30 +3,85 @@ using Contentful.Core.Models;
 
 public static class ContentfulAPI
 {
+  private static void PrintContent(IContent content)
+  {
+    if (content.GetType() == typeof(Text))
+    {
+      var text = content as Text;
+      if (text?.Value != "")
+      {
+        Console.WriteLine("Text: " + text?.Value);
+      }
+    }
+  }
+
   public static async Task GetAllEntries()
   {
     // This client should only be created once per application.
     var httpClient = new HttpClient();
 
-    var client = new ContentfulManagementClient(
+    var client = new ContentfulClient(
       httpClient,
-      ContentfulSecrets.CONTENTFUL_API_KEY,
+      ContentfulSecrets.DELIVERY_API_KEY,
+      ContentfulSecrets.PREVIEW_API_KEY,
       ContentfulSecrets.CONTENTFUL_SPACE_ID
     );
 
-    var entries = await client.GetEntriesCollection<Entry<dynamic>>();
+    var entries = await client.GetEntriesByType<ComponentText>("componentText");
 
-    foreach (var item in entries.Items)
+    foreach (ComponentText entry in entries.Items)
     {
-      Console.WriteLine("SYS >> ", item.SystemProperties);
-      Console.WriteLine("ID >> ", item.SystemProperties.Id);
-      Console.WriteLine("TYPE >> ", item.SystemProperties.Type);
-      Console.WriteLine("LINK TYPE >> ", item.SystemProperties.LinkType);
-      Console.WriteLine("CONTENT TYPE >> ", item.SystemProperties.ContentType);
+      Console.WriteLine("ID: " + entry.Sys?.Id);
 
-      foreach (var field in item.Fields)
+      Console.WriteLine("INTERNAL NAME: " + entry.InternalName);
+
+      foreach (IContent node in entry.Content?.Content!)
       {
-        Console.WriteLine(field.ToString());
+        switch (node)
+        {
+          case Paragraph p:
+            foreach (IContent item in p.Content)
+            {
+              PrintContent(item);
+            }
+            break;
+          case Heading1 h:
+            foreach (IContent item in h.Content)
+            {
+              PrintContent(item);
+            }
+            break;
+          case Heading2 h:
+            foreach (IContent item in h.Content)
+            {
+              PrintContent(item);
+            }
+            break;
+          case Heading3 h:
+            foreach (IContent item in h.Content)
+            {
+              PrintContent(item);
+            }
+            break;
+          case Heading4 h:
+            foreach (IContent item in h.Content)
+            {
+              PrintContent(item);
+            }
+            break;
+          case Heading5 h:
+            foreach (IContent item in h.Content)
+            {
+              PrintContent(item);
+            }
+            break;
+          case Heading6 h:
+            foreach (IContent item in h.Content)
+            {
+              PrintContent(item);
+            }
+            break;
+        }
       }
 
       Console.WriteLine();
